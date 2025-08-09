@@ -19,10 +19,10 @@ def parse(debug_file_location, num_of_blocks):
         #       'initialized': <timestamp of cmpctblock initialized>,
         #       'reconstructed': <timestamp of cmpctblock reconstructed>,
         #       'tip_updated': <timestamp of update tip>,
-        #       'prefilled_txs': <number of prefilled txs>,
-        #       'mempool_txs': <number of txs taken from mempool>,
-        #       'extrapool_txs': <number of txs taken from extra pool>,
-        #       'requested_txs': <number of txs requested from peer>
+        #       'prefilled': <number of prefilled txs>,
+        #       'mempool': <number of txs taken from mempool>,
+        #       'extrapool': <number of txs taken from extra pool>,
+        #       'requested': <number of txs requested from peer>
         #   }
         #   
         #   all fields are optional except for block
@@ -43,10 +43,10 @@ def parse(debug_file_location, num_of_blocks):
                 words = line.split(' ')
                 entry['reconstructed'] = parse_datetime(words[0])
                 entry['block'] = words[5]
-                entry['prefilled_txs'] = int(words[7])
-                entry['mempool_txs'] = int(words[10])
-                entry['extrapool_txs'] = int(words[17])
-                entry['requested_txs'] = int(words[22])
+                entry['prefilled'] = int(words[7])
+                entry['mempool'] = int(words[10])
+                entry['extrapool'] = int(words[17])
+                entry['requested'] = int(words[22])
             # this message seems to log individual txs that were needed so ignore 
             elif re.search(r'^.*\[cmpctblock\] Reconstructed.*$', line):
                 # words = line.split(' ')
@@ -75,7 +75,7 @@ def parse(debug_file_location, num_of_blocks):
     block_df['lag_micros'] = block_df.apply(lambda x: (x['reconstructed'] - x['initialized']).total_seconds() * 1000000, 1)
     block_df['block_abbr'] = block_df.block.apply(lambda x: x[:4]) + '...' + block_df.block.apply(lambda x: x[-15:])
 
-    print(block_df[['height', 'block_abbr', 'initialized', 'reconstructed', 'prefilled_txs', 'mempool_txs', 'extrapool_txs', 'requested_txs', 'lag_micros']].tail(num_of_blocks).to_string(index=False))
+    print(block_df[['height', 'block_abbr', 'initialized', 'reconstructed', 'prefilled', 'mempool', 'extrapool', 'requested', 'lag_micros']].tail(num_of_blocks).to_string(index=False))
 
 if __name__ == '__main__':
     parse('./debug.log', 50)
