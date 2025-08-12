@@ -13,17 +13,17 @@ python compact_block_debug_parser.py
 
 ### running python notebook
 
-if running in virtual env or different python version than system default
+if using virtual env (otherwise skip)
 ```
+python -m venv .venv && source .venv/bin/activate
+pip install jupyterlab
 pip install ipykernel
+python -m ipykernel install --user --name=venv
 ```
 
 then
 ```
 jupyter lab
 ```
-or
-```
-jupyter notebook
-```
 
+open the `compact_block_reconstructions.ipynb` jupyter notebook (if using virtual env make sure to select the `venv` kernel that was created with the commands above)
