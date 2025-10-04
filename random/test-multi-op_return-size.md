@@ -8,6 +8,9 @@
 ```bash
 echo "regtest=1" > $DATA_DIR_30/bitcoin.conf
 bitcoind30 -daemon -datacarriersize=83
+```
+and then
+```bash
 bcli30 createwallet "satoshi"   
 bcli30 generatetoaddress 101 $(bcli30 getnewaddress)
 coinbase_txid=$(bcli30 listunspent | jq -r ".[0].txid")
